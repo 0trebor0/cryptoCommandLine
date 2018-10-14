@@ -12,9 +12,9 @@ if( !fs.existsSync(__dirname+'/temp') ){
 	process.exit();
 }
 
-encryptFile = ( key, filename )=>{
+encryptFile = ( key, filename, filelocation )=>{
 	let cipher = crypto.createCipher('aes-256-cbc',key);
-	let input = fs.createReadStream(filename);
+	let input = fs.createReadStream(filelocation);
 	let output = fs.createWriteStream(__dirname+'/temp/'+filename);
 
 	input.pipe(cipher).pipe(output);
@@ -29,9 +29,9 @@ encryptFile = ( key, filename )=>{
 	});
 	
 }
-decryptFile = ( key, filename )=>{
+decryptFile = ( key, filename, filelocation )=>{
 	let cipher = crypto.createDecipher('aes-256-cbc',key);
-	let input = fs.createReadStream(filename);
+	let input = fs.createReadStream(filelocation);
 	let output = fs.createWriteStream(__dirname+'/temp/'+filename);
 
 	input.pipe(cipher).pipe(output);
@@ -48,17 +48,17 @@ decryptFile = ( key, filename )=>{
 }
 
 if( arg[0] == 'encrypt' ){
-	if( fs.existsSync(arg[2]) ){
-		encryptFile( arg[1], arg[2].toString('hex') );
+	if( fs.existsSync(arg[3]) ){
+		encryptFile( arg[1].toString('hex'), arg[2], arg[3] );
 	}else{
 		console.log(chalk.red("ERROR: file not found"));	
 	}
 }else if( arg[0] == 'decrypt' ){
-	if( fs.existsSync(arg[2]) ){
-		decryptFile( arg[1], arg[2].toString('hex') );
+	if( fs.existsSync(arg[3]) ){
+		decryptFile( arg[1].toString('hex'), arg[2], arg[3] );
 	}else{
 		console.log(chalk.red("ERROR: file not found"));	
 	}
 }else{
-	console.log(chalk.red("ERROR: invalid command\r\nENCRYPT: node index encrypt key filename\r\nDECRYPT: node index decrypt key filename"));
+	console.log(chalk.red("ERROR: invalid command\r\nENCRYPT: node index encrypt key filename filelocation\r\nDECRYPT: node index decrypt key filename filelocation\n\rEXAMPLE:\r\nEXAMPLE: node index encrypt trebor test.txt /home/debian/Documents/test.txt\r\nEXAMPLE: node index decrypt trebor test.txt /home/debian/Documents/test.txt"));
 }
