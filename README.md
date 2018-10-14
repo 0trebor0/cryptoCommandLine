@@ -7,4 +7,5 @@ Just a crypto command line to encrypt and decrypt file
 
 EXAMPLE:
 ENCRYPT: node index encrypt trebor test.txt /home/debian/Documents/test.txt
+
 DECRYPT: node index decrypt trebor test.txt /home/debian/Documents/test.txt
